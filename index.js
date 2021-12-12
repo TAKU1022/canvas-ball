@@ -3,15 +3,17 @@ const canvas = document.getElementById('canvas');
  * @type {CanvasRenderingContext2D}
  */
 const ctx = canvas.getContext('2d');
+const width = ctx.canvas.width;
+const height = ctx.canvas.height;
 
 let requestId = null;
 const calculateRadian = (degrees) => (Math.PI / 180) * degrees;
 
 const ball = {
   x: 0,
-  y: ctx.canvas.height,
+  y: height / 2,
   r: 30,
-  speed: 2,
+  speed: 1,
   isAnimated: false,
   drawBall() {
     ctx.beginPath();
@@ -23,27 +25,25 @@ const ball = {
 };
 
 const draw = () => {
-  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  ctx.clearRect(0, 0, width, height);
 
-  if (ball.x >= ctx.canvas.width + ball.r / 2) {
+  if (ball.x >= width) {
     ball.x = 0;
-    ball.y = ctx.canvas.height;
   }
 
   ball.drawBall();
 
   ball.x += ball.speed;
-  ball.y -= ball.speed;
 };
 
-const animateCanvas = () => {
+const animate = () => {
   draw();
-  requestId = window.requestAnimationFrame(animateCanvas);
+  requestId = window.requestAnimationFrame(animate);
 };
 
 window.onload = () => {
   ball.isAnimated = true;
-  animateCanvas();
+  animate();
 };
 
 canvas.addEventListener('click', () => {
@@ -51,7 +51,29 @@ canvas.addEventListener('click', () => {
     window.cancelAnimationFrame(requestId);
     ball.isAnimated = false;
   } else {
-    requestId = window.requestAnimationFrame(animateCanvas);
+    requestId = window.requestAnimationFrame(animate);
     ball.isAnimated = true;
   }
+});
+
+const translateButton = document.getElementById('translate-button');
+const rotateButton = document.getElementById('rotate-button');
+const scaleButton = document.getElementById('scale-button');
+
+translateButton.addEventListener('click', () => {
+  const translateArray = [10, 20, 30, 40, 50, -10, -20, -30, -40, -50];
+  const randomTranslateNumber = Math.floor(
+    Math.random() * translateArray.length
+  );
+  ctx.translate(0, translateArray[randomTranslateNumber]);
+});
+
+rotateButton.addEventListener('click', () => {
+  ctx.translate(width / 2, height / 2);
+  ctx.rotate(calculateRadian(45));
+  ctx.translate(-width / 2, -height / 2);
+});
+
+scaleButton.addEventListener('click', () => {
+  ctx.scale(1.1, 1.1);
 });
