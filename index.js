@@ -75,5 +75,7 @@ rotateButton.addEventListener('click', () => {
 });
 
 scaleButton.addEventListener('click', () => {
+  ctx.translate(width / 2, height / 2);
   ctx.scale(1.1, 1.1);
+  ctx.translate(-width / 2, -height / 2);
 });
