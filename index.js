@@ -10,7 +10,7 @@ let requestId = null;
 const calculateRadian = (degrees) => (Math.PI / 180) * degrees;
 
 const ball = {
-  x: 0,
+  x: width / 2,
   y: height / 2,
   r: 30,
   speed: 1,
@@ -36,14 +36,13 @@ const draw = () => {
   ball.x += ball.speed;
 };
 
+window.onload = () => {
+  draw();
+};
+
 const animate = () => {
   draw();
   requestId = window.requestAnimationFrame(animate);
-};
-
-window.onload = () => {
-  ball.isAnimated = true;
-  animate();
 };
 
 canvas.addEventListener('click', () => {
@@ -51,7 +50,7 @@ canvas.addEventListener('click', () => {
     window.cancelAnimationFrame(requestId);
     ball.isAnimated = false;
   } else {
-    requestId = window.requestAnimationFrame(animate);
+    animate();
     ball.isAnimated = true;
   }
 });
