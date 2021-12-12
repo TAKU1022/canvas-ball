@@ -69,7 +69,7 @@ translateButton.addEventListener('click', () => {
 
 rotateButton.addEventListener('click', () => {
   ctx.translate(width / 2, height / 2);
-  ctx.rotate(calculateRadian(45));
+  ctx.rotate(calculateRadian(90));
   ctx.translate(-width / 2, -height / 2);
 });
 
