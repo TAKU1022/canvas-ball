@@ -2,9 +2,9 @@ const canvas = document.getElementById('canvas');
 /**
  * @type {CanvasRenderingContext2D}
  */
-const ctx = canvas.getContext('2d');
-const width = ctx.canvas.width;
-const height = ctx.canvas.height;
+const context = canvas.getContext('2d');
+const width = context.canvas.width;
+const height = context.canvas.height;
 
 let requestId = null;
 const calculateRadian = (degrees) => (Math.PI / 180) * degrees;
@@ -16,16 +16,22 @@ const ball = {
   speed: 1,
   isAnimated: false,
   drawBall() {
-    ctx.beginPath();
-    ctx.fillStyle = 'red';
-    ctx.arc(this.x, this.y, this.r, calculateRadian(0), calculateRadian(360));
-    ctx.fill();
-    ctx.closePath();
+    context.beginPath();
+    context.fillStyle = 'red';
+    context.arc(
+      this.x,
+      this.y,
+      this.r,
+      calculateRadian(0),
+      calculateRadian(360)
+    );
+    context.fill();
+    context.closePath();
   },
 };
 
 const draw = () => {
-  ctx.clearRect(0, 0, width, height);
+  context.clearRect(0, 0, width, height);
 
   if (ball.x >= width) {
     ball.x = 0;
@@ -64,17 +70,17 @@ translateButton.addEventListener('click', () => {
   const randomTranslateNumber = Math.floor(
     Math.random() * translateArray.length
   );
-  ctx.translate(0, translateArray[randomTranslateNumber]);
+  context.translate(0, translateArray[randomTranslateNumber]);
 });
 
 rotateButton.addEventListener('click', () => {
-  ctx.translate(width / 2, height / 2);
-  ctx.rotate(calculateRadian(90));
-  ctx.translate(-width / 2, -height / 2);
+  context.translate(width / 2, height / 2);
+  context.rotate(calculateRadian(90));
+  context.translate(-width / 2, -height / 2);
 });
 
 scaleButton.addEventListener('click', () => {
-  ctx.translate(width / 2, height / 2);
-  ctx.scale(1.1, 1.1);
-  ctx.translate(-width / 2, -height / 2);
+  context.translate(width / 2, height / 2);
+  context.scale(1.1, 1.1);
+  context.translate(-width / 2, -height / 2);
 });
