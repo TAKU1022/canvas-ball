@@ -19,8 +19,11 @@ class Ball {
     this.y = canvas.height / 2 - this.height / 2;
     this.speed = 2;
     this.isAnimated = false;
-    this.rotate = 0;
-    this.isRotate = false;
+    this.dx = 0;
+    this.dy = 0;
+    this.degrees = 0;
+    this.mx = 1.0;
+    this.my = 1.0;
 
     this.drawRect();
   }
@@ -30,10 +33,15 @@ class Ball {
   }
 
   drawRect() {
-    this.clear();
     this.context.save();
-    this.context.translate(this.canvas.width / 2, this.canvas.height / 2);
-    this.context.rotate(calculateRadian(this.rotate));
+    this.clear();
+    this.context.translate(this.dx, this.dy);
+    this.context.translate(
+      this.canvas.width / 2 + this.dx,
+      this.canvas.height / 2 + this.dy
+    );
+    this.context.rotate(calculateRadian(this.degrees));
+    this.context.scale(this.mx, this.my);
     this.context.translate(-this.canvas.width / 2, -this.canvas.height / 2);
     this.context.fillStyle = 'red';
     this.context.fillRect(this.x, this.y, this.width, this.height);
@@ -41,9 +49,8 @@ class Ball {
   }
 
   move() {
-    this.drawRect();
-    this.toggleRotate();
     this.x += this.speed;
+    this.drawRect();
   }
 
   pause() {
@@ -56,10 +63,25 @@ class Ball {
     }
   }
 
-  toggleRotate() {
-    if (this.isRotate) {
-      this.rotate += 2;
-    }
+  translate() {
+    const translateArray = [10, 20, 30, 40, 50, -10, -20, -30, -40, -50];
+    const randomTranslateNumber = Math.floor(
+      Math.random() * translateArray.length
+    );
+    this.dx = translateArray[randomTranslateNumber];
+    this.dy = translateArray[randomTranslateNumber];
+    this.drawRect();
+  }
+
+  rotate() {
+    this.degrees += 15;
+    this.drawRect();
+  }
+
+  scale() {
+    this.mx += 0.2;
+    this.my += 0.2;
+    this.drawRect();
   }
 }
 
@@ -85,20 +107,15 @@ const rotateButton = document.getElementById('rotate-button');
 const scaleButton = document.getElementById('scale-button');
 
 translateButton.addEventListener('click', () => {
-  const translateArray = [10, 20, 30, 40, 50, -10, -20, -30, -40, -50];
-  const randomTranslateNumber = Math.floor(
-    Math.random() * translateArray.length
-  );
-  ball.y += translateArray[randomTranslateNumber];
+  ball.translate();
 });
 
 rotateButton.addEventListener('click', () => {
-  ball.isRotate = !ball.isRotate;
+  ball.rotate();
 });
 
 scaleButton.addEventListener('click', () => {
-  ball.width += 8;
-  ball.height += 8;
+  ball.scale();
 });
 
 animate();
